@@ -1,0 +1,31 @@
+{
+	"name": "vscode-launch-config-generator",
+	"version": "1.0.0",
+	"description": "A JS script that automatically generates or updates VS Code `launch.json` debug configurations based on the scripts defined in your `package.json`.",
+	"main": "scripts/generate-launch-config.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"generate:launch": "node scripts/generate-launch-config.js",
+		"generate:launch:yes": "node scripts/generate-launch-config.js --yes",
+		"generate:launch:yarn": "node scripts/generate-launch-config.js --manager yarn --yes",
+		"generate:launch:dev": "node scripts/generate-launch-config.js --filter dev --yes"
+	},
+	"keywords": [
+		"vscode",
+		"launch.json",
+		"debug",
+		"scripts",
+		"automation"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andrealba/vscode-launch-config-generator.git"
+	},
+	"author": "Andrea ALba <https://github.com/andrealba>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andrealba/vscode-launch-config-generator/issues"
+	},
+	"homepage": "https://github.com/andrealba/vscode-launch-config-generator#readme"
+}

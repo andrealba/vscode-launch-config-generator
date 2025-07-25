@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * generate-launch-config.js
  *

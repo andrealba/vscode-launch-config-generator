@@ -32,7 +32,6 @@
  *  Last Modified: Friday, 25th July 2025 20:07:03
  *  Modified By: Andrea Alba (AA) <https://github.com/andrealba>
  *
- *  @file       TODO: Describe the file
  *  @author     Andrea Alba (AA) <https://github.com/andrealba>
  *  @license    MIT License https://opensource.org/licenses/MIT
  *  @version    1.0.0

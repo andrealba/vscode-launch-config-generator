@@ -1,0 +1,3 @@
+# ignore directories
+node_modules/
+# ignore js files built with webpack and babel

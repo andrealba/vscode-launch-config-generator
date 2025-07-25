@@ -1,5 +1,5 @@
 /**
- * generate-launch-config.js
+ * VS Code Launch Config Generator.
  *
  * Generates or merges Visual Studio Code launch configurations from scripts defined
  * in package.json. It supports npm, yarn, or pnpm, with optional script name filtering,
@@ -22,6 +22,25 @@
  *   --manager <npm|yarn|pnpm>   Package manager to use (default: npm)
  *   --filter <prefix>           Only include scripts starting with this prefix
  *   --yes                       Automatically overwrite existing configs without prompting
+ *
+ *  File relative path: \scripts\generate-launch-config.js
+ *  Project: vscode-launch-config-generator
+ *
+ *  File Created: Friday, 25th July 2025 14:33:40
+ *  Author: Andrea Alba (AA) <https://github.com/andrealba>
+ *
+ *  Last Modified: Friday, 25th July 2025 20:07:03
+ *  Modified By: Andrea Alba (AA) <https://github.com/andrealba>
+ *
+ *  @file       TODO: Describe the file
+ *  @author     Andrea Alba (AA) <https://github.com/andrealba>
+ *  @license    MIT License https://opensource.org/licenses/MIT
+ *  @version    1.0.0
+ *  @link       https://github.com/andrealba/vscode-launch-config-generator
+ *
+ *  HISTORY:
+ *  Date        By   Comments
+ *  ----------  ---  ---------------------------------------------------------
  */
 
 import fs from 'fs';
@@ -51,8 +70,8 @@ const getArg = (flag, fallback) => {
 const hasFlag = (flag) => args.includes(flag);
 
 const packageManager = getArg('--manager', 'npm'); // npm, yarn, or pnpm
-const filterPrefix = getArg('--filter', '');       // optional script name prefix
-const autoYes = hasFlag('--yes');                  // skip confirmation prompts
+const filterPrefix = getArg('--filter', ''); // optional script name prefix
+const autoYes = hasFlag('--yes'); // skip confirmation prompts
 
 // -------------------- File Paths --------------------
 
@@ -79,11 +98,11 @@ function promptYesNo(question) {
 
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
 
-  return new Promise(resolve => {
-    rl.question(question + ' (y/n): ', answer => {
+  return new Promise((resolve) => {
+    rl.question(question + ' (y/n): ', (answer) => {
       rl.close();
       resolve(answer.trim().toLowerCase() === 'y');
     });
@@ -99,6 +118,11 @@ if (!fs.existsSync(packageJsonPath)) {
 
 const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 let scripts = pkg.scripts || {};
+
+// Remove any scripts that include "generate-launch" anywhere in their name
+scripts = Object.fromEntries(
+  Object.entries(scripts).filter(([name]) => !name.includes('generate-launch'))
+);
 
 // Filter scripts by prefix if --filter is used
 if (filterPrefix) {
@@ -120,7 +144,7 @@ if (!fs.existsSync(vscodeDir)) {
 // Load existing launch.json and create a backup
 let existingLaunchJson = {
   version: '0.2.0',
-  configurations: []
+  configurations: [],
 };
 
 if (fs.existsSync(launchJsonPath)) {
@@ -136,7 +160,7 @@ if (fs.existsSync(launchJsonPath)) {
 }
 
 const existingConfigs = existingLaunchJson.configurations || [];
-const configMap = new Map(existingConfigs.map(cfg => [cfg.name, cfg]));
+const configMap = new Map(existingConfigs.map((cfg) => [cfg.name, cfg]));
 
 // -------------------- Build New Configurations --------------------
 
@@ -153,7 +177,7 @@ for (const scriptName of Object.keys(scripts)) {
     runtimeArgs: ['run', scriptName],
     console: 'integratedTerminal',
     internalConsoleOptions: 'neverOpen',
-    skipFiles: ['<node_internals>/**']
+    skipFiles: ['<node_internals>/**'],
   };
 
   if (configMap.has(configName)) {
@@ -186,9 +210,13 @@ for (const scriptName of Object.keys(scripts)) {
 
   const mergedLaunchJson = {
     version: '0.2.0',
-    configurations: Array.from(configMap.values())
+    configurations: Array.from(configMap.values()),
   };
 
   fs.writeFileSync(launchJsonPath, JSON.stringify(mergedLaunchJson, null, 2));
-  console.log(`✅ launch.json updated with ${newConfigs.length + (overwriteConfirmed ? configsToOverwrite.length : 0)} configuration(s).`);
+  console.log(
+    `✅ launch.json updated with ${
+      newConfigs.length + (overwriteConfirmed ? configsToOverwrite.length : 0)
+    } configuration(s).`
+  );
 })();

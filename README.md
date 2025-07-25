@@ -1,14 +1,19 @@
 # VS Code Launch Config Generator
 
-A JS script that automatically generates or updates VS Code `launch.json` debug configurations based on the scripts defined in your `package.json`.
+A JS scrip that automatically generates or merges VS Code `launch.json` debug configurations based on the scripts defined in your `package.json`.
+in package.json. It supports npm, yarn, or pnpm, with optional script name filtering,
+timestamped backups, and a single confirmation prompt when overwriting existing entries.
 
-It supports:
+Features:
 
-- `npm`, `yarn`, or `pnpm`
-- Script filtering by prefix (e.g., only `dev:*` scripts)
-- One-time confirmation prompt for overwriting existing configs
-- Automatic backups of existing `launch.json` (timestamped)
-- Automatic mode with `--yes` flag for CI or scripted use
+- Detects and loads scripts from `package.json`
+- Adds one launch configuration per script
+- It supports `npm`, `yarn`, or `pnpm`
+- Optionally filters scripts by prefix (e.g., `dev`)
+- Confirmation prompt before overwriting existing launch configurations
+- Automatic timestamped backups of existing `.vscode/launch.json` file
+- Command-line options to skip prompts (--yes) and specify package manager and filter
+- Skipping scripts containing "generate-launch" anywhere in their names
 
 ---
 
@@ -24,7 +29,7 @@ Then add the script to `scripts/generate-launch-config.js`.
 
 ## 🚀 Usage
 
-You can run the script directly with Node:
+Run the script with Node.js from your project root:
 
 ```bash
 node scripts/generate-launch-config.js
@@ -49,11 +54,11 @@ npm run generate-launch
 
 ## ⚙️ CLI Options
 
-| Flag                | Description                                                      |
-| ------------------- | ---------------------------------------------------------------- |
-| `--manager <pm>`    | Specify package manager: `npm` (default), `yarn`, or `pnpm`      |
-| `--filter <prefix>` | Only include scripts starting with the given prefix (e.g. `dev`) |
-| `--yes`             | Automatically confirm overwrites (no prompts)                    |
+| Flag                          | Description                                                      |
+| ----------------------------- | ---------------------------------------------------------------- |
+| `--manager <npm\|yarn\|pnpm>` | Specify package manager: `npm` (default), `yarn`, or `pnpm`      |
+| `--filter <prefix>`           | Only include scripts starting with the given prefix (e.g. `dev`) |
+| `--yes`                       | Automatically confirm overwrites (no prompts)                    |
 
 ## 💡 Examples
 
@@ -94,6 +99,16 @@ node scripts/generate-launch-config.js --manager yarn --yes
 }
 ```
 
+## 🖥️ How it works
+
+- Reads your project's `package.json` and extracts the scripts section.
+- Filters out any scripts containing `generate-launch` in their names.
+- Optionally filters scripts by prefix if `--filter` is specified.
+- Loads existing `.vscode/launch.json` and creates a timestamped backup.
+- Adds launch configurations for all matched scripts.
+- Prompts once if any configs will be overwritten (unless `--yes` is used).
+- Saves the merged configurations back to `.vscode/launch.json.`
+
 ## 🛠️ Requirements
 
 - Node.js installed
@@ -102,13 +117,8 @@ node scripts/generate-launch-config.js --manager yarn --yes
 
 ## 🧩 License
 
-MIT — use it freely for your projects.
+MIT License
 
-```bash
-Let me know if you'd like me to also:
-- Add badges (npm, license, etc.)
-- Turn this into a CLI package (`npx`, global install, etc.)
-- Add screenshots of the debug UI in VS Code
+## 🤝 Contributing
 
-I'm happy to help!
-```
+Feel free to open issues or submit pull requests if you'd like to improve this script!

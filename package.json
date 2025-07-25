@@ -6,10 +6,10 @@
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"generate:launch": "node scripts/generate-launch-config.js",
-		"generate:launch:yes": "node scripts/generate-launch-config.js --yes",
-		"generate:launch:yarn": "node scripts/generate-launch-config.js --manager yarn --yes",
-		"generate:launch:dev": "node scripts/generate-launch-config.js --filter dev --yes"
+		"generate-launch": "node scripts/generate-launch-config.js",
+		"generate-launch:yes": "node scripts/generate-launch-config.js --yes",
+		"generate-launch:yarn": "node scripts/generate-launch-config.js --manager yarn --yes",
+		"generate-launch:dev": "node scripts/generate-launch-config.js --filter dev --yes"
 	},
 	"keywords": [
 		"vscode",
